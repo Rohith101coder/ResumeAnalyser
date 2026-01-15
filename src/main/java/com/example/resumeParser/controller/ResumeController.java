@@ -1,6 +1,7 @@
 package com.example.resumeParser.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ public class ResumeController {
     public ResumeController(ResumeService resumeService){
         this.resumeService=resumeService;
     }
-
+    @PostMapping("/upload")
     public ResponseEntity<String> uploadResume(@RequestParam("file") MultipartFile file){
         String extractedText=resumeService.parseResume(file);
         return ResponseEntity.ok(extractedText);
