@@ -1,0 +1,17 @@
+java
+spring boot
+spring security
+react
+mysql
+jwt
+rest api
+html
+css
+javascript
+data structures
+algorithms
+docker
+kubernetes
+aws
+git
+github
