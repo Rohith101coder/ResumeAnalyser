@@ -1,17 +1,100 @@
 java
-spring boot
-spring security
-react
-mysql
-jwt
-rest api
+python
+c
+c++
+javascript
+typescript
 html
 css
 javascript
-data structures
-algorithms
+react
+redux
+next.js
+bootstrap
+tailwind css
+material ui
+spring
+spring boot
+spring mvc
+spring security
+hibernate
+jpa
+node.js
+express.js
+rest api
+graphql
+mysql
+postgresql
+mongodb
+redis
+oracle
+sqlite
+jwt
+oauth
+oauth2
+spring security
+authentication
+authorization
+aws
+azure
+gcp
 docker
 kubernetes
-aws
+jenkins
+ci/cd
+github actions
 git
 github
+gitlab
+bitbucket
+postman
+swagger
+maven
+gradle
+data structures
+algorithms
+object oriented programming
+oops
+collections framework
+exception handling
+multithreading
+operating systems
+computer networks
+dbms
+system design
+machine learning
+deep learning
+artificial intelligence
+nlp
+natural language processing
+tensorflow
+pytorch
+scikit-learn
+pandas
+numpy
+sql
+etl
+data analysis
+data visualization
+power bi
+tableau
+unit testing
+integration testing
+junit
+mockito
+selenium
+microservices
+monolithic architecture
+mvc architecture
+layered architecture
+design patterns
+solid principles
+api integration
+backend development
+frontend development
+full stack development
+software development
+problem solving
+fastapi
+flask
+Django
