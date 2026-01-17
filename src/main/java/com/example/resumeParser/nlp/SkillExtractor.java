@@ -28,4 +28,16 @@ public class SkillExtractor {
             throw new RuntimeException("Failed to load skills dictionary",e);
         }
     }
+
+    public Set<String> extractSkills(String text){
+        Set<String> extractedSkills=new HashSet<>();
+        String lowerText=text.toLowerCase();
+
+        for(String skill:skillDictionary){
+            if(lowerText.contains(skill)){
+                extractedSkills.add(skill);
+            }
+        }
+        return extractedSkills;
+    }
 }
