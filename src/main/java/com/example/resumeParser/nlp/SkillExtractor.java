@@ -41,3 +41,9 @@ public class SkillExtractor {
         return extractedSkills;
     }
 }
+
+
+
+// This component loads a predefined list of skills from a file (skills.txt)
+// and extracts matching skills from input text such as a resume or job description.
+// Skill matching is case-insensitive and returns unique skills only.
