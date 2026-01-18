@@ -13,7 +13,7 @@ public class ResumeParser {
         try{
             return tike.parseToString(file.getInputStream());
         }catch(Exception e){
-            throw new RuntimeException("Fail to parse resumr",e);
+            throw new RuntimeException("Fail to parse resume",e);
         }
     }
 }
