@@ -22,3 +22,6 @@ public class ResumeJdAnalysisService {
         return skillGapService.analyze(resumeText, jdText);
     }
 }
+
+
+//current we are using this api for resume and jd service

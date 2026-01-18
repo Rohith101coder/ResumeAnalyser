@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.resumeParser.analyzer.SkillGapAnalyzer;
 import com.example.resumeParser.dto.SkillGapResponse;
+import com.example.resumeParser.enums.MatchPossibility;
 import com.example.resumeParser.nlp.SkillExtractor;
 
 @Service
@@ -14,6 +15,9 @@ public class SkillGapService {
     
     private final SkillExtractor skillExtractor;
     private final SkillGapAnalyzer skillGapAnalyzer;
+    private static final int MAX_ALLOWED_MISSING_SKILLS = 3;
+    
+
 
     public SkillGapService(SkillExtractor skillExtractor,SkillGapAnalyzer skillGapAnalyzer){
         this.skillExtractor=skillExtractor;
@@ -24,6 +28,8 @@ public class SkillGapService {
         Set<String> resumeSkills=skillExtractor.extractSkills(resumeText);
         Set<String> jdSkills=skillExtractor.extractSkills(jdText);
         Set<String> missingSkills=skillGapAnalyzer.findMissingSkills(resumeSkills, jdSkills);
-        return new SkillGapResponse(resumeSkills, jdSkills, missingSkills);
+        MatchPossibility possibility=missingSkills.size()<=MAX_ALLOWED_MISSING_SKILLS?MatchPossibility.POSSIBLE:MatchPossibility.NOT_POSSIBLE;
+       
+        return new SkillGapResponse(resumeSkills, jdSkills, missingSkills,possibility);
     }
 }

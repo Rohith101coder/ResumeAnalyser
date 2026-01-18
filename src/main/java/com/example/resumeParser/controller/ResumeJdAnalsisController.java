@@ -25,7 +25,12 @@ public class ResumeJdAnalsisController {
         @RequestParam("jobDescription") String jobDescription
     ){
         SkillGapResponse response=service.analyze(file,jobDescription);
+        
 
         return ResponseEntity.ok(response);
     }
 }
+
+
+// current we are using this api
+//direct and resme and jd should be given together
