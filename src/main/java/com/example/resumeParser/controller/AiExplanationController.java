@@ -3,6 +3,7 @@ package com.example.resumeParser.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +22,7 @@ public class AiExplanationController {
             this.service=service;
     }
 
-
+    @PostMapping("/simple")
     public ResponseEntity<String> explainSimple(@RequestBody List<String> missingSkills){
         return ResponseEntity.ok(service.explainSimply(missingSkills));
         
