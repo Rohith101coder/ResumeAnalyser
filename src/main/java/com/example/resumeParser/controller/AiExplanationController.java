@@ -1,6 +1,6 @@
 package com.example.resumeParser.controller;
 
-import java.util.List;
+
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.resumeParser.ai.AiExplanationService;
+import com.example.resumeParser.dto.AiExplainRequest;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
@@ -22,9 +23,13 @@ public class AiExplanationController {
             this.service=service;
     }
 
-    @PostMapping("/simple")
-    public ResponseEntity<String> explainSimple(@RequestBody List<String> missingSkills){
-        return ResponseEntity.ok(service.explainSimply(missingSkills));
-        
-    }
+   @PostMapping("/simple")
+public ResponseEntity<String> explainSimple(
+        @RequestBody AiExplainRequest request) {
+
+    return ResponseEntity.ok(
+            service.explainSimply(request.getMissingSkills())
+    );
+}
+
 }
