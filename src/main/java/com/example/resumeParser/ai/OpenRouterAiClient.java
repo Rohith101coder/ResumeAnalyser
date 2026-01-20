@@ -1,34 +1,34 @@
 package com.example.resumeParser.ai;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
-
-
-
+@Primary
 @Component
-public class OpenAiClient implements AiClient {
-
+public class OpenRouterAiClient implements AiClient{
     private final WebClient webClient;
     private final String model;
 
-    public OpenAiClient(
-            @Value("${OPENAI_API_KEY}") String apiKey,
+    public OpenRouterAiClient(
+            @Value("${OPENROUTER_API_KEY}") String apiKey,
             @Value("${ai.model}") String model) {
-                System.out.println("OPENAI KEY LOADED = " + apiKey);
-
 
         this.model = model;
 
         this.webClient = WebClient.builder()
-                .baseUrl("https://api.openai.com/v1")
+                .baseUrl("https://openrouter.ai/api/v1")
                 .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + apiKey)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                // REQUIRED by OpenRouter
+                .defaultHeader("HTTP-Referer", "http://localhost:8080")
+                .defaultHeader("X-Title", "Resume Parser AI")
                 .build();
     }
 
@@ -37,9 +37,12 @@ public class OpenAiClient implements AiClient {
 
         Map<String, Object> requestBody = Map.of(
                 "model", model,
-                "messages", new Object[]{
-                        Map.of("role", "user", "content", prompt)
-                }
+                "messages", List.of(
+                        Map.of(
+                                "role", "user",
+                                "content", prompt
+                        )
+                )
         );
 
         return webClient.post()
@@ -49,22 +52,23 @@ public class OpenAiClient implements AiClient {
                 .onStatus(
                         status -> status.is4xxClientError() || status.is5xxServerError(),
                         response -> response.bodyToMono(String.class)
-                                .map(body -> new RuntimeException("OpenAI API error: " + body))
+                                .map(body -> new RuntimeException(
+                                        "OpenRouter API error: " + body))
                 )
                 .bodyToMono(Map.class)
                 .map(response -> {
-                    var choices = (java.util.List<?>) response.get("choices");
+
+                    var choices = (List<?>) response.get("choices");
                     if (choices == null || choices.isEmpty()) {
-                        return "No choices returned by AI";
+                        return "No response from OpenRouter";
                     }
 
                     var firstChoice = (Map<?, ?>) choices.get(0);
                     var message = (Map<?, ?>) firstChoice.get("message");
-                    return message != null ? message.get("content").toString()
-                                           : "Message missing in AI response";
+
+                    return message.get("content").toString();
                 })
                 .block();
     }
-}
 
-//   this is code is not in service just ignore it
+}
