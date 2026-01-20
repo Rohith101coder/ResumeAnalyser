@@ -19,4 +19,9 @@ public class AiExplanationService {
         String prompt = promptBuilder.buildSimpleExplanationPrompt(missingSkills);
         return aiClient.generate(prompt);
     }
+
+     public String explainDeep(List<String> missingSkills) {
+        String prompt = promptBuilder.buildDeepExplanationPrompt(missingSkills);
+        return aiClient.generate(prompt);
+    }
 }

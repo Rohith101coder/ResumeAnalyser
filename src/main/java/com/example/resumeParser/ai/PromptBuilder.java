@@ -7,33 +7,169 @@ import org.springframework.stereotype.Component;
 @Component
 public class PromptBuilder {
 
-    public String buildSimpleExplanationPrompt(List<String> skills){
-         if (skills == null || skills.isEmpty()) {
-        return "No skills were provided to explain.";
-    }
+   public String buildSimpleExplanationPrompt(List<String> missingSkills) {
 
+    if (missingSkills == null || missingSkills.isEmpty()) {
         return """
-                Explain the following skills to a 10-year-old child.
-        Use simple stories and real-life examples.
-        Avoid technical jargon.
-        Keep it friendly and encouraging.
-
-        Skills: %s
-                """.formatted(String.join(", ", skills));
+        You are a career mentor.
+        The candidate already meets all required skills.
+        Give a short encouraging message in 2–3 lines.
+        """;
     }
-    public static String buildDeepExplanationPrompt(List<String> skills) {
 
+   String skillsText = String.join(", ", missingSkills);
+
+    return """
+You are a senior software mentor and technical storyteller.
+
+Explain the following missing technical skills:
+%s
+
+For EACH skill:
+1. Start with a short story showing real-world usage.
+2. Explain the skill in very simple terms.
+3. Explain why this skill is important in real jobs.
+4. Give a practical real-world example.
+5. Explain how a beginner can start learning it step by step.
+
+Rules:
+- Explain ONLY the skills provided above.
+- Do NOT introduce unrelated skills.
+- Use a friendly, motivating tone.
+- Total length: 50–70 lines.
+
+After all explanations, add a section titled "Key Takeaways" with bullet points.
+""".formatted(skillsText);
+}
+
+    public  String buildDeepExplanationPrompt(List<String> missingSkills) {
+         String skillsText = String.join(", ", missingSkills);
         return """
-        Explain the following skills in detail with:
-        - clear definition
-        - why it is used
-        - where it is used in real projects
-        - simple examples
+       You are a senior software engineer and technical architect.
 
-        Skills:
-        %s
-        """.formatted(String.join(", ", skills));
+Explain EACH of the following skills in a highly technical, structured, and professional manner suitable for:
+- software engineers
+- computer science students
+- technical interviews
+- real-world project implementation
+
+Skills to explain:
+%s
+
+For EACH skill, strictly follow this structure:
+
+----------------------------------------------------
+1. Technical Definition
+----------------------------------------------------
+- Precise and clear definition
+- Explain the core purpose of the skill
+- Use standard industry terminology
+
+----------------------------------------------------
+2. Why This Skill Is Used
+----------------------------------------------------
+- Problems it solves
+- Benefits over alternatives
+- Impact on scalability, performance, or productivity
+
+----------------------------------------------------
+3. Real-World Usage
+----------------------------------------------------
+- Enterprise and industry use cases
+- How it is used in production systems
+- Integration in modern software architectures
+
+----------------------------------------------------
+4. Core Concepts and Topics
+----------------------------------------------------
+- List all major concepts related to the skill
+- Explain each concept briefly and technically
+
+----------------------------------------------------
+5. Learning Roadmap (Beginner → Advanced)
+----------------------------------------------------
+- Step-by-step technical learning path
+- Foundational topics
+- Advanced and production-level topics
+- Best practices and common pitfalls
+
+----------------------------------------------------
+6. Skill-Type Based Deep Dive
+----------------------------------------------------
+IF the skill is a PROGRAMMING LANGUAGE:
+- Language fundamentals
+- Syntax and core constructs
+- Data structures and control flow
+- Object-Oriented / Functional concepts (if applicable)
+- Standard libraries and frameworks
+- Tooling and ecosystem
+- Typical use cases
+
+IF the skill is a TOOL / FRAMEWORK / PLATFORM:
+- Architecture and internal components
+- Key features and capabilities
+- Configuration and setup
+- Deployment and integration
+- Security and performance considerations
+- Best practices
+
+----------------------------------------------------
+7. Code Examples
+----------------------------------------------------
+- Provide clean, real-world code examples
+- Include comments for clarity
+- Explain the code line-by-line
+- Keep examples realistic and production-relevant
+
+----------------------------------------------------
+8. Practical Implementation
+----------------------------------------------------
+- How this skill is applied in real projects
+- Example project scenarios
+- How teams use it in day-to-day development
+
+----------------------------------------------------
+9. Practice and Skill Validation
+----------------------------------------------------
+- Hands-on practice recommendations
+- Mini-project ideas
+- How to assess proficiency
+
+----------------------------------------------------
+10. Learning Resources
+----------------------------------------------------
+Provide high-quality technical resources:
+- Official documentation
+- YouTube technical channels
+- GitHub repositories
+- Blogs or free courses
+
+----------------------------------------------------
+11. Interview Preparation
+----------------------------------------------------
+- Common interview questions
+- Scenario-based questions
+- Practical coding or design questions
+
+----------------------------------------------------
+12. Summary
+----------------------------------------------------
+- Key takeaways
+- What makes this skill valuable
+- How it fits into a professional software engineer’s skill set
+
+Guidelines:
+- Be technical and precise
+- Avoid storytelling or motivational language
+- Use professional tone
+- Cover the topic comprehensively
+- Ensure clarity and depth
+
+Now generate the explanation.
+        """.formatted(skillsText);
     }
+
+
     public static String buildQuizPrompt(List<String> skills) {
 
         return """

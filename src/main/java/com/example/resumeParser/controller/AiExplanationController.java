@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.resumeParser.ai.AiExplanationService;
 import com.example.resumeParser.dto.AiExplainRequest;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 @RestController
 @RequestMapping("api/ai/explain")
@@ -26,10 +27,23 @@ public class AiExplanationController {
    @PostMapping("/simple")
 public ResponseEntity<String> explainSimple(
         @RequestBody AiExplainRequest request) {
+                 System.out.println("Received skills: " + request.getMissingSkills());
 
     return ResponseEntity.ok(
             service.explainSimply(request.getMissingSkills())
     );
 }
+
+@PostMapping("/deep")
+public ResponseEntity<String> explainDeep(
+        @RequestBody AiExplainRequest request) {
+                 System.out.println("Received skills: " + request.getMissingSkills());
+
+    return ResponseEntity.ok(
+            service.explainDeep(request.getMissingSkills())
+    );
+}
+
+
 
 }
