@@ -170,7 +170,7 @@ Now generate the explanation.
     }
 
 
-    public static String buildQuizPrompt(List<String> skills) {
+    public  String buildQuizPrompt(List<String> skills) {
 
         String SkillText=String.join(", ", skills);
         return """
