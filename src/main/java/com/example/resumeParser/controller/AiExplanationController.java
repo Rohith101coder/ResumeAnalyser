@@ -3,6 +3,7 @@ package com.example.resumeParser.controller;
 
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("api/ai/explain")
+@CrossOrigin(origins = "*")
 public class AiExplanationController {
 
     private final AiExplanationService service;
@@ -41,6 +43,16 @@ public ResponseEntity<String> explainDeep(
 
     return ResponseEntity.ok(
             service.explainDeep(request.getMissingSkills())
+    );
+}
+
+@PostMapping("/questions")
+public ResponseEntity<String> getQuestions(
+        @RequestBody AiExplainRequest request) {
+                 System.out.println("Received skills: " + request.getMissingSkills());
+
+    return ResponseEntity.ok(
+            service.getQuestions(request.getMissingSkills())
     );
 }
 

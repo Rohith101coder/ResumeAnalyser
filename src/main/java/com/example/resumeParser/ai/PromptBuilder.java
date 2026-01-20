@@ -172,13 +172,58 @@ Now generate the explanation.
 
     public static String buildQuizPrompt(List<String> skills) {
 
+        String SkillText=String.join(", ", skills);
         return """
-        Generate 10 multiple-choice questions (MCQs)
-        for each of the following skills.
-        Provide correct answers at the end.
+        You are a senior technical interviewer and subject-matter expert.
 
-        Skills:
-        %s
-        """.formatted(String.join(", ", skills));
+Generate MULTIPLE-CHOICE QUESTIONS (MCQs) for EACH of the following skills.
+
+Skills:
+%s
+
+Instructions:
+- Generate exactly **10 MCQs per skill**
+- Questions must be **technical and concept-based**
+- Difficulty level: **Intermediate to Advanced**
+- Avoid overly basic or theoretical-only questions
+- Questions should reflect **real-world usage, best practices, and edge cases**
+
+For EACH question:
+- Provide **4 options (A, B, C, D)**
+- Only **ONE correct answer**
+- Options should be realistic and non-obvious
+
+Structure the output STRICTLY as follows:
+
+----------------------------------------------------
+Skill: <Skill Name>
+----------------------------------------------------
+
+Q1. <Question text>
+A. <Option A>
+B. <Option B>
+C. <Option C>
+D. <Option D>
+
+Q2. ...
+
+(repeat until Q10)
+
+----------------------------------------------------
+Correct Answers:
+----------------------------------------------------
+Q1. <Correct Option>
+Q2. <Correct Option>
+...
+Q10. <Correct Option>
+
+Guidelines:
+- Do NOT include explanations unless explicitly asked
+- Use correct technical terminology
+- Keep formatting clean and consistent
+- Ensure accuracy
+
+Now generate the MCQs.
+        """.formatted(SkillText);
     }
 }
