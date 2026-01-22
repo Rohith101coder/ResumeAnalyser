@@ -58,7 +58,7 @@ public ResponseEntity<Map<String, Object>> explainDeep(
 
 
 @PostMapping("/questions")
-public ResponseEntity<String> getQuestions(
+public ResponseEntity<Map<String,Object>> getQuestions(
         @RequestBody AiExplainRequest request) {
                  System.out.println("Received skills: " + request.getMissingSkills());
 
