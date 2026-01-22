@@ -18,9 +18,15 @@ public class AiExplanationService {
         this.promptBuilder = promptBuilder;
     }
 
-    public String explainSimply(List<String> missingSkills) {
+    public Map<String,Object> explainSimply(List<String> missingSkills) {
         String prompt = promptBuilder.buildSimpleExplanationPrompt(missingSkills);
-        return aiClient.generate(prompt);
+        String aiResponse= aiClient.generate(prompt);
+        try{
+            ObjectMapper mapper=new ObjectMapper();
+            return mapper.readValue(aiResponse, Map.class);
+        }catch(Exception e){
+            throw new RuntimeException("Ai returned invalid JSON");
+        }
     }
 
     public Map<String, Object> explainDeep(List<String> skills) {

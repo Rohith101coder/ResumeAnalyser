@@ -11,38 +11,72 @@ public class PromptBuilder {
 
     if (missingSkills == null || missingSkills.isEmpty()) {
         return """
-        You are a career mentor.
-        The candidate already meets all required skills.
-        Give a short encouraging message in 2–3 lines.
+        Respond ONLY in valid JSON.
+
+        {
+          "status": "no_missing_skills",
+          "message": "You already have all the required skills for this role. Stay consistent, keep practicing, and aim higher — you are doing great."
+        }
         """;
     }
 
-   String skillsText = String.join(", ", missingSkills);
+    String skillsText = String.join(", ", missingSkills);
 
     return """
-You are a senior software mentor and technical storyteller.
+You are a senior software engineer and career mentor.
 
-Explain the following missing technical skills:
+Respond ONLY in valid JSON.
+Do NOT include markdown.
+Do NOT include explanations outside JSON.
+
+Generate a detailed but easy-to-understand response using the following structure:
+
+{
+  "status": "missing_skills_found",
+  "skills": [
+    {
+      "name": "<skill name>",
+
+      "whatItIs": "<Explain what this skill is using very simple words, assuming the user is a beginner>",
+
+      "whyItIsImportant": "<Explain clearly why companies use this skill and why it matters in real jobs>",
+
+      "whereItIsUsed": "<Explain where this skill is used in real-world projects, products, or systems>",
+
+      "howItWorksInSimpleTerms": "<Explain how it works internally in a simplified way>",
+
+      "practicalExample": "<Give a realistic and easy example of using this skill>",
+
+      "howToStartLearning": [
+        "<Beginner step 1>",
+        "<Beginner step 2>",
+        "<Beginner step 3>",
+        "<Beginner step 4>",
+        "<Beginner step 5>"
+      ]
+    }
+  ],
+
+  "overallGuidance": {
+    "confidenceMessage": "<Motivating message that reassures the learner>",
+    "learningTip": "<Advice on how to approach learning these skills step by step>"
+  }
+}
+
+Skills to explain:
 %s
 
-For EACH skill:
-1. Start with a short story showing real-world usage.
-2. Explain the skill in very simple terms.
-3. Explain why this skill is important in real jobs.
-4. Give a practical real-world example.
-5. Explain how a beginner can start learning it step by step.
-
 Rules:
-- Explain ONLY the skills provided above.
-- Do NOT introduce unrelated skills.
-- Use a friendly, motivating tone.
-- Total length: 50–70 lines.
-
-After all explanations, add a section titled "Key Takeaways" with bullet points.
+- Generate ONE detailed object per skill
+- Explain concepts slowly and clearly
+- Assume the reader has basic programming knowledge
+- Do NOT introduce unrelated skills
+- Focus on clarity, depth, and confidence building
 """.formatted(skillsText);
 }
 
-   public static String buildDeepExplanationPrompt(List<String> skills) {
+
+   public  String buildDeepExplanationPrompt(List<String> skills) {
 
     return """
     You are a technical assistant.

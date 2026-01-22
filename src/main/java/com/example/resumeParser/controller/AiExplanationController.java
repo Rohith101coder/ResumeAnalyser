@@ -29,7 +29,7 @@ public class AiExplanationController {
     }
 
    @PostMapping("/simple")
-public ResponseEntity<String> explainSimple(
+public ResponseEntity<Map<String,Object>> explainSimple(
         @RequestBody AiExplainRequest request) {
                  System.out.println("Received skills: " + request.getMissingSkills());
 
