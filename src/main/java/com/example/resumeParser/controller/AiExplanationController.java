@@ -2,6 +2,8 @@ package com.example.resumeParser.controller;
 
 
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,15 +38,24 @@ public ResponseEntity<String> explainSimple(
     );
 }
 
+// @PostMapping("/deep")
+// public ResponseEntity<String> explainDeep(
+//         @RequestBody AiExplainRequest request) {
+//                  System.out.println("Received skills: " + request.getMissingSkills());
+
+//     return ResponseEntity.ok(
+//             service.explainDeep(request.getMissingSkills())
+//     );
+// }
 @PostMapping("/deep")
-public ResponseEntity<String> explainDeep(
+public ResponseEntity<Map<String, Object>> explainDeep(
         @RequestBody AiExplainRequest request) {
-                 System.out.println("Received skills: " + request.getMissingSkills());
 
     return ResponseEntity.ok(
-            service.explainDeep(request.getMissingSkills())
+        service.explainDeep(request.getMissingSkills())
     );
 }
+
 
 @PostMapping("/questions")
 public ResponseEntity<String> getQuestions(

@@ -42,132 +42,49 @@ After all explanations, add a section titled "Key Takeaways" with bullet points.
 """.formatted(skillsText);
 }
 
-    public  String buildDeepExplanationPrompt(List<String> missingSkills) {
-         String skillsText = String.join(", ", missingSkills);
-        return """
-       You are a senior software engineer and technical architect.
+   public static String buildDeepExplanationPrompt(List<String> skills) {
 
-Explain EACH of the following skills in a highly technical, structured, and professional manner suitable for:
-- software engineers
-- computer science students
-- technical interviews
-- real-world project implementation
+    return """
+    You are a technical assistant.
 
-Skills to explain:
-%s
+    Respond ONLY in valid JSON format.
+    Do NOT include markdown.
+    Do NOT include explanations outside JSON.
+    The response MUST be a JSON object.
 
-For EACH skill, strictly follow this structure:
-
-----------------------------------------------------
-1. Technical Definition
-----------------------------------------------------
-- Precise and clear definition
-- Explain the core purpose of the skill
-- Use standard industry terminology
-
-----------------------------------------------------
-2. Why This Skill Is Used
-----------------------------------------------------
-- Problems it solves
-- Benefits over alternatives
-- Impact on scalability, performance, or productivity
-
-----------------------------------------------------
-3. Real-World Usage
-----------------------------------------------------
-- Enterprise and industry use cases
-- How it is used in production systems
-- Integration in modern software architectures
-
-----------------------------------------------------
-4. Core Concepts and Topics
-----------------------------------------------------
-- List all major concepts related to the skill
-- Explain each concept briefly and technically
-
-----------------------------------------------------
-5. Learning Roadmap (Beginner → Advanced)
-----------------------------------------------------
-- Step-by-step technical learning path
-- Foundational topics
-- Advanced and production-level topics
-- Best practices and common pitfalls
-
-----------------------------------------------------
-6. Skill-Type Based Deep Dive
-----------------------------------------------------
-IF the skill is a PROGRAMMING LANGUAGE:
-- Language fundamentals
-- Syntax and core constructs
-- Data structures and control flow
-- Object-Oriented / Functional concepts (if applicable)
-- Standard libraries and frameworks
-- Tooling and ecosystem
-- Typical use cases
-
-IF the skill is a TOOL / FRAMEWORK / PLATFORM:
-- Architecture and internal components
-- Key features and capabilities
-- Configuration and setup
-- Deployment and integration
-- Security and performance considerations
-- Best practices
-
-----------------------------------------------------
-7. Code Examples
-----------------------------------------------------
-- Provide clean, real-world code examples
-- Include comments for clarity
-- Explain the code line-by-line
-- Keep examples realistic and production-relevant
-
-----------------------------------------------------
-8. Practical Implementation
-----------------------------------------------------
-- How this skill is applied in real projects
-- Example project scenarios
-- How teams use it in day-to-day development
-
-----------------------------------------------------
-9. Practice and Skill Validation
-----------------------------------------------------
-- Hands-on practice recommendations
-- Mini-project ideas
-- How to assess proficiency
-
-----------------------------------------------------
-10. Learning Resources
-----------------------------------------------------
-Provide high-quality technical resources:
-- Official documentation
-- YouTube technical channels
-- GitHub repositories
-- Blogs or free courses
-
-----------------------------------------------------
-11. Interview Preparation
-----------------------------------------------------
-- Common interview questions
-- Scenario-based questions
-- Practical coding or design questions
-
-----------------------------------------------------
-12. Summary
-----------------------------------------------------
-- Key takeaways
-- What makes this skill valuable
-- How it fits into a professional software engineer’s skill set
-
-Guidelines:
-- Be technical and precise
-- Avoid storytelling or motivational language
-- Use professional tone
-- Cover the topic comprehensively
-- Ensure clarity and depth
-
-Now generate the explanation.
-        """.formatted(skillsText);
+    Structure:
+    {
+      "skills": [
+        {
+          "name": "skill name",
+          "definition": "",
+          "why_used": "",
+          "real_world_usage": [],
+          "learning_path": {
+            "topics": [],
+            "steps": []
+          },
+          "examples": [
+            {
+              "description": "",
+              "code": ""
+            }
+          ],
+          "resources": {
+            "youtube": [],
+            "github": [],
+            "docs": []
+          },
+          "interview_questions": []
+        }
+      ]
     }
+
+    Skills to explain:
+    %s
+    """.formatted(String.join(", ", skills));
+}
+
 
 
     public  String buildQuizPrompt(List<String> skills) {

@@ -1,8 +1,11 @@
 package com.example.resumeParser.ai;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 @Service
 public class AiExplanationService {
@@ -20,10 +23,19 @@ public class AiExplanationService {
         return aiClient.generate(prompt);
     }
 
-     public String explainDeep(List<String> missingSkills) {
-        String prompt = promptBuilder.buildDeepExplanationPrompt(missingSkills);
-        return aiClient.generate(prompt);
+    public Map<String, Object> explainDeep(List<String> skills) {
+
+    String prompt = promptBuilder.buildDeepExplanationPrompt(skills);
+    String aiResponse = aiClient.generate(prompt);
+
+    try {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(aiResponse, Map.class);
+    } catch (Exception e) {
+        throw new RuntimeException("AI returned invalid JSON", e);
     }
+}
+
 
     public String getQuestions(List<String> missingSkills){
         String prompt=promptBuilder.buildQuizPrompt(missingSkills);
