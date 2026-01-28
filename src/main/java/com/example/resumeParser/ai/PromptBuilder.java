@@ -53,7 +53,22 @@ Generate a detailed but easy-to-understand response using the following structur
         "<Beginner step 3>",
         "<Beginner step 4>",
         "<Beginner step 5>"
-      ]
+      ],
+
+      "learningContext": {
+        "coreKeywords": [
+          "<important keyword 1>",
+          "<important keyword 2>",
+          "<important keyword 3>"
+        ],
+        "mentalModel": "<One short sentence describing how the learner should imagine this skill working>",
+        "keyConceptsIntroduced": [
+          "<concept 1>",
+          "<concept 2>",
+          "<concept 3>"
+        ],
+        "assumedUnderstandingAfterThisExplanation": "<Describe what the learner is expected to understand after reading this explanation>"
+      }
     }
   ],
 
@@ -71,6 +86,8 @@ Rules:
 - Explain concepts slowly and clearly
 - Assume the reader has basic programming knowledge
 - Do NOT introduce unrelated skills
+- learningContext MUST align with the explanations above
+- learningContext will be reused for deep explanations
 - Focus on clarity, depth, and confidence building
 """.formatted(skillsText);
 }
@@ -160,9 +177,9 @@ Use the following JSON structure strictly:
 
 Question rules:
 - Generate EXACTLY 10 questions per skill
-- Difficulty level: Intermediate to Advanced
+- Difficulty level: Easy to Intermediate
 - Focus on real-world usage, best practices, edge cases, and common pitfalls
-- Avoid basic definition-only questions
+- include some basic definition-only questions also
 - Only ONE correct option per question
 - Options must be realistic and non-trivial
 - Use correct technical terminology

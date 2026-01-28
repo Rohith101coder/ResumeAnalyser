@@ -33,4 +33,4 @@ public class ResumeJdAnalsisController {
 
 
 // current we are using this api
-//direct and resme and jd should be given together
+//direct  resume and jd should be given together

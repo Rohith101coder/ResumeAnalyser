@@ -2,6 +2,7 @@ java
 python
 c
 c++
+aiml
 javascript
 typescript
 html
