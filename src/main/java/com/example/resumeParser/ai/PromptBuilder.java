@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.example.resumeParser.dto.LearningContextDTO;
+
 @Component
 public class PromptBuilder {
 
@@ -93,48 +95,96 @@ Rules:
 }
 
 
-   public  String buildDeepExplanationPrompt(List<String> skills) {
+   public String buildDeepExplanationPrompt(
+        String skill,
+        LearningContextDTO context
+) {
 
     return """
-    You are a technical assistant.
+You are a senior technical expert and system designer.
 
-    Respond ONLY in valid JSON format.
-    Do NOT include markdown.
-    Do NOT include explanations outside JSON.
-    The response MUST be a JSON object.
+Respond ONLY in valid JSON.
+Do NOT include markdown.
+Do NOT include explanations outside JSON.
+The response MUST be a single JSON object.
 
-    Structure:
-    {
-      "skills": [
-        {
-          "name": "skill name",
-          "definition": "",
-          "why_used": "",
-          "real_world_usage": [],
-          "learning_path": {
-            "topics": [],
-            "steps": []
-          },
-          "examples": [
-            {
-              "description": "",
-              "code": ""
-            }
-          ],
-          "resources": {
-            "youtube": [],
-            "github": [],
-            "docs": []
-          },
-          "interview_questions": []
-        }
-      ]
-    }
+IMPORTANT CONTEXT:
+The learner has already received a simple explanation.
+Use the following learning context to CONTINUE from their understanding.
+Do NOT re-explain basics they already know.
 
-    Skills to explain:
-    %s
-    """.formatted(String.join(", ", skills));
+Learning Context:
+{
+  "coreKeywords": %s,
+  "mentalModel": "%s",
+  "keyConceptsIntroduced": %s,
+  "assumedUnderstanding": "%s"
 }
+
+Now generate a DEEP technical explanation for the skill: "%s"
+
+JSON Structure:
+{
+  "skill": {
+    "name": "%s",
+
+    "definition": "<Precise technical definition, deeper than beginner level>",
+
+    "why_used": "<Technical and architectural reasons why this skill is used>",
+
+    "real_world_usage": [
+      "<Usage in real production systems>",
+      "<Enterprise or large-scale use cases>"
+    ],
+
+    "learning_path": {
+      "topics": [
+        "<Core topic 1>",
+        "<Core topic 2>",
+        "<Advanced topic 3>"
+      ],
+      "steps": [
+        "<Step-by-step deep learning progression>"
+      ]
+    },
+
+    "examples": [
+      {
+        "description": "<Realistic technical scenario>",
+        "code": "<Production-style example code>"
+      }
+    ],
+
+    "resources": {
+      "youtube": ["<High-quality tutorial link>"],
+      "github": ["<Official or popular repo>"],
+      "docs": ["<Official documentation link>"]
+    },
+
+    "interview_questions": [
+      "<Intermediate-level question>",
+      "<Advanced scenario-based question>"
+    ]
+  }
+}
+
+Rules:
+- Build upon the provided learning context
+- Do NOT contradict earlier explanations
+- Go deeper, not wider
+- Keep explanations structured and professional
+- Assume the learner already understands the basics
+"""
+.formatted(
+        context.getCoreKeywords(),
+        context.getMentalModel(),
+        context.getKeyConceptsIntroduced(),
+        context.getAssumedUnderstandingAfterThisExplanation(),
+        skill,
+        skill
+);
+}
+
 
 
 
