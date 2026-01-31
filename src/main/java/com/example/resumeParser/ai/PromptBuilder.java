@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Component;
 
-import com.example.resumeParser.dto.LearningContextDTO;
 
 @Component
 public class PromptBuilder {
@@ -95,75 +94,89 @@ Rules:
 }
 
 
-   public String buildDeepExplanationPrompt(List<String> skill) {
+  public String buildDeepExplanationPrompt(List<String> skills) {
 
-      String skillsText = String.join(", ", skill);
+    String skillsText = String.join(", ", skills);
+
     return """
 You are a senior technical expert and system designer.
+
+IMPORTANT CONTEXT:
+The learner has already received a SIMPLE explanation for these skills.
+Now deepen the SAME concepts without repeating beginner-level explanations.
+Build on what the learner already understands.
 
 Respond ONLY in valid JSON.
 Do NOT include markdown.
 Do NOT include explanations outside JSON.
 The response MUST be a single JSON object.
 
-IMPORTANT CONTEXT:
-The learner has already received a simple explanation.
-Give explanation in deep way how does it useful
-
-
-Now generate a DEEP technical explanation for the skill: 
-
 JSON Structure:
 {
-  "skill": {
-    "name": "<skill name>",
+  "skills": [
+    {
+      "name": "<skill name>",
 
-    "definition": "<Precise technical definition, deeper than beginner level>",
+      "definition": "<Precise technical definition, deeper than beginner level>",
 
-    "why_used": "<Technical and architectural reasons why this skill is used>",
+      "why_used": "<Technical, architectural, and performance reasons why this skill is used>",
 
-    "real_world_usage": [
-      "<Usage in real production systems>",
-      "<Enterprise or large-scale use cases>"
-    ],
-
-    "learning_path": {
-      "topics": [
-        "<Core topic 1>",
-        "<Core topic 2>",
-        "<Advanced topic 3>"
+      "real_world_usage": [
+        "<Usage in real production systems>",
+        "<Enterprise-scale or cloud-native use cases>"
       ],
-      "steps": [
-        "<Step-by-step deep learning progression>"
+
+      "learning_path": {
+        "topics": [
+          "<Core internal concepts>",
+          "<Architecture-level topics>",
+          "<Advanced or optimization-related topics>"
+        ],
+        "steps": [
+          "<Step-by-step deep learning progression building on basics>"
+        ]
+      },
+
+      "examples": [
+        {
+          "description": "<Realistic technical scenario>",
+          "code": "<Production-style or industry-relevant example code>"
+        }
+      ],
+
+      "resources": {
+        "youtube": ["<High-quality tutorial link>"],
+        "github": ["<Official or popular open-source repository>"],
+        "docs": ["<Official documentation link>"]
+      },
+
+      "interview_questions": [
+        "<Intermediate technical question>",
+        "<Advanced scenario-based or design question>"
       ]
-    },
-
-    "examples": [
-      {
-        "description": "<Realistic technical scenario>",
-        "code": "<Production-style example code>"
-      }
-    ],
-
-    "resources": {
-      "youtube": ["<High-quality tutorial link>"],
-      "github": ["<Official or popular repo>"],
-      "docs": ["<Official documentation link>"]
-    },
-
-    "interview_questions": [
-      "<Intermediate-level question>",
-      "<Advanced scenario-based question>"
-    ]
-  }
+    }
+  ]
 }
+
+Skills to explain deeply:
+%s
 
 Rules:
+- Generate ONE object per skill
+- Do NOT repeat beginner explanations
 - Go deeper, not wider
-- Keep explanations structured and professional
-- Assume the learner already understands the basics
+- Keep explanations technical, structured, and professional
+- Maintain conceptual continuity with the earlier simple explanation
+IMPORTANT:
+- The generated explanation will be displayed on UI AND used to generate a PDF
+- Keep text professional, structured, and readable
+- Avoid conversational phrases
+- Avoid markdown, emojis, or HTML
+- Each field should contain clean paragraph-style text
+
 """.formatted(skillsText);
 }
+
 
 
 
