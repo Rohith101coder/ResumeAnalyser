@@ -61,7 +61,6 @@ public ResponseEntity<Map<String, Object>> explainDeep(
 public ResponseEntity<Map<String,Object>> getQuestions(
         @RequestBody AiExplainRequest request) {
                  System.out.println("Received skills: " + request.getMissingSkills());
-
     return ResponseEntity.ok(
             service.getQuestions(request.getMissingSkills())
     );

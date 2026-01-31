@@ -95,11 +95,9 @@ Rules:
 }
 
 
-   public String buildDeepExplanationPrompt(
-        String skill,
-        LearningContextDTO context
-) {
+   public String buildDeepExplanationPrompt(List<String> skill) {
 
+      String skillsText = String.join(", ", skill);
     return """
 You are a senior technical expert and system designer.
 
@@ -110,23 +108,15 @@ The response MUST be a single JSON object.
 
 IMPORTANT CONTEXT:
 The learner has already received a simple explanation.
-Use the following learning context to CONTINUE from their understanding.
-Do NOT re-explain basics they already know.
+Give explanation in deep way how does it useful
 
-Learning Context:
-{
-  "coreKeywords": %s,
-  "mentalModel": "%s",
-  "keyConceptsIntroduced": %s,
-  "assumedUnderstanding": "%s"
-}
 
-Now generate a DEEP technical explanation for the skill: "%s"
+Now generate a DEEP technical explanation for the skill: 
 
 JSON Structure:
 {
   "skill": {
-    "name": "%s",
+    "name": "<skill name>",
 
     "definition": "<Precise technical definition, deeper than beginner level>",
 
@@ -169,20 +159,10 @@ JSON Structure:
 }
 
 Rules:
-- Build upon the provided learning context
-- Do NOT contradict earlier explanations
 - Go deeper, not wider
 - Keep explanations structured and professional
 - Assume the learner already understands the basics
-"""
-.formatted(
-        context.getCoreKeywords(),
-        context.getMentalModel(),
-        context.getKeyConceptsIntroduced(),
-        context.getAssumedUnderstandingAfterThisExplanation(),
-        skill,
-        skill
-);
+""".formatted(skillsText);
 }
 
 
