@@ -1,6 +1,7 @@
 package com.example.resumeParser.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,6 +13,7 @@ import com.example.resumeParser.service.ResumeJdAnalysisService;
 
 @RestController
 @RequestMapping("/api/analyze")
+@CrossOrigin(origins = "*")
 public class ResumeJdAnalsisController {
     private final ResumeJdAnalysisService service;
 

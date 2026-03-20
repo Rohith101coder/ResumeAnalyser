@@ -32,44 +32,7 @@ public class OpenRouterAiClient implements AiClient{
                 .build();
     }
 
-//     @Override
-//     public String generate(String prompt) {
-
-//         Map<String, Object> requestBody = Map.of(
-//                 "model", model,
-//                 "messages", List.of(
-//                         Map.of(
-//                                 "role", "user",
-//                                 "content", prompt
-//                         )
-//                 )
-//         );
-
-//         return webClient.post()
-//                 .uri("/chat/completions")
-//                 .bodyValue(requestBody)
-//                 .retrieve()
-//                 .onStatus(
-//                         status -> status.is4xxClientError() || status.is5xxServerError(),
-//                         response -> response.bodyToMono(String.class)
-//                                 .map(body -> new RuntimeException(
-//                                         "OpenRouter API error: " + body))
-//                 )
-//                 .bodyToMono(Map.class)
-//                 .map(response -> {
-
-//                     var choices = (List<?>) response.get("choices");
-//                     if (choices == null || choices.isEmpty()) {
-//                         return "No response from OpenRouter";
-//                     }
-
-//                     var firstChoice = (Map<?, ?>) choices.get(0);
-//                     var message = (Map<?, ?>) firstChoice.get("message");
-
-//                     return message.get("content").toString();
-//                 })
-//                 .block();
-//     }
+// Removed old generate method
 @Override
 public String generate(String prompt) {
 
@@ -107,6 +70,17 @@ public String generate(String prompt) {
                 var message = (Map<?, ?>) firstChoice.get("message");
 
                 String content = message.get("content").toString().trim();
+
+                // Clean Markdown code blocks if present
+                if (content.startsWith("```json")) {
+                    content = content.substring(7);
+                } else if (content.startsWith("```")) {
+                    content = content.substring(3);
+                }
+                if (content.endsWith("```")) {
+                    content = content.substring(0, content.length() - 3);
+                }
+                content = content.trim();
 
                 // 🚨 Guard: ensure JSON
                 if (!content.startsWith("{")) {

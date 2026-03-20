@@ -38,15 +38,7 @@ public ResponseEntity<Map<String,Object>> explainSimple(
     );
 }
 
-// @PostMapping("/deep")
-// public ResponseEntity<String> explainDeep(
-//         @RequestBody AiExplainRequest request) {
-//                  System.out.println("Received skills: " + request.getMissingSkills());
-
-//     return ResponseEntity.ok(
-//             service.explainDeep(request.getMissingSkills())
-//     );
-// }
+// Removed old commented out code
 @PostMapping("/deep")
 public ResponseEntity<Map<String, Object>> explainDeep(
         @RequestBody AiExplainRequest request) {

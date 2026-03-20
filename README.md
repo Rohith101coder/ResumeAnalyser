@@ -1,201 +1,99 @@
-Resume Skill Gap Analyzer with AI
-
-An AI-powered backend application that analyzes missing skills and provides structured explanations, deep technical insights, quizzes, and learning guidance using modern LLM APIs.
-Built with Spring Boot, designed for clean JSON responses and frontend-friendly integration.
-
-🚀 Project Overview
-
-This project helps users understand skill gaps by:
-
-Explaining missing skills in a simple and confidence-building way
-
-Providing deep technical explanations when the user wants to go deeper
-
-Generating MCQs (tests) to evaluate understanding
-
-Returning well-structured JSON, making frontend styling easy
-
-The system is designed like a career mentor + technical guide rather than just a chatbot.
-
-🎯 Problem It Solves
-
-Users often don’t know what a skill really means beyond buzzwords
-
-Generic AI responses are hard to format and reuse on the frontend
-
-Learning paths are unclear and not personalized
-
-This project solves that by:
-
-Breaking explanations into clear sections
-
-Separating simple learning from deep technical learning
-
-Returning consistent JSON responses for UI rendering
-
-Preparing users for real-world usage and interviews
-
-🧠 Key Features
-1️⃣ Simple Skill Explanation (Beginner-Friendly)
-
-Explains what the skill is, why it matters, and where it’s used
-
-Uses clear language assuming basic programming knowledge
-
-Includes a learning context (keywords, mental model, concepts)
-
-2️⃣ Deep Technical Explanation
-
-Builds on the simple explanation
-
-Focuses on architecture, internals, performance, and real-world systems
-
-Includes:
-
-Learning path
-
-Production-style examples
-
-Resources (Docs, GitHub, YouTube)
-
-Interview questions
-
-3️⃣ Skill-Based MCQ Generation
-
-Generates 10 technical MCQs per skill
-
-Intermediate to advanced difficulty
-
-Suitable for self-assessment and interviews
-
-4️⃣ Clean JSON Responses
-
-No raw text blobs
-
-Easy to render on frontend (cards, tabs, PDFs, quizzes)
-
-Designed for scalability and UI styling
-
-🛠️ Tech Stack
-
-Java 17+
-
-Spring Boot
-
-Spring Web
-
-WebClient
-
-Jackson ObjectMapper
-
-OpenRouter API (LLM Integration)
-
-Postman (API Testing)
-
-📡 API Endpoints
-🔹 Simple Explanation
-POST /api/ai/explain/simple
-
-
-Request
-
-{
-  "missingSkills": ["Docker", "Kubernetes"]
-}
-
-
-Response
-
-Beginner-friendly explanation
-
-Learning context included
-
-JSON structured output
-
-🔹 Deep Explanation
-POST /api/ai/explain/deep
-
-
-Response
-
-Technical depth
-
-Real-world usage
-
-Code examples
-
-Resources & interview questions
-
-🔹 Skill Quiz
-POST /api/ai/explain/questions
-
-
-Response
-
-10 MCQs per skill
-
-Correct answers included
-
-Clean structured format
-
-🧩 Project Architecture
-controller
- └── AiExplanationController
-
-service
- └── AiExplanationService
-
-ai
- ├── AiClient
- ├── OpenRouterAiClient
- └── PromptBuilder
-
-dto
- └── AiExplainRequest
-
-🧪 Testing
-
-Fully tested using Postman
-
-Verified:
-
-Simple explanation flow
-
-Deep explanation flow
-
-Quiz generation
-
-JSON validated using ObjectMapper
-
-📈 Impact & Metrics
-
-Reduced unstructured AI output by 100%
-
-Improved frontend rendering flexibility
-
-Faster learning comprehension with layered explanations
-
-Designed to scale for:
-
-Resume analyzers
-
-Learning platforms
-
-Career guidance systems
-
-🔮 Future Enhancements
-
-PDF generation for explanations
-
-Database persistence for learning history
-
-Authentication & user profiles
-
-Frontend UI (React / Angular)
-
-Skill progress tracking
-
-👨‍💻 Author
-
-Rohith
-Backend Developer | Java | Spring Boot | AI Integration
+# SkillSync AI - AI-Powered Resume & Skill Gap Analyzer
+
+![SkillSync AI Demo](Video%20Project%207.gif)
+
+**SkillSync AI** is a full-stack, AI-driven platform designed to ingest candidate resumes, extract their technical proficiencies, compare them against a specific Job Description (JD), and offer personalized AI mentorship for the missing skills. 
+
+Whether you're preparing for an upcoming interview or structuring a learning path, SkillSync AI acts as your personal career mentor—explaining concepts, diving deep into architectures, and testing your knowledge.
+
+---
+
+## 🌟 Key Features
+
+- **Automated Resume Parsing:** Instantly extracts raw text from uploaded resumes (PDF & DOCX) using powerful document processing via **Apache Tika** & **Apache PDFBox**.
+- **Intelligent Skill Gap Analysis:** Matches your existing tech stack against a predefined dictionary of industry requirements from any Job Description. It precisely isolates your "Missing Skills".
+- **AI Mentorship (Three Tiers):**
+  - 📖 **Story Mode:** Generates simple, beginner-friendly explanations with practical analogies.
+  - 🔍 **Deep Dive:** Provides seniors with precise documentation on architectural importance and real-world system usages.
+  - 🧠 **Mock Test:** Immediately builds an interactive 10-question multiple-choice quiz directly within the UI to test your knowledge of the missing skill.
+- **Glassmorphism UI:** Built completely from scratch with pure modern CSS, integrating animations, dynamic interactions, and sleek layout designs without heavily relying on CSS frameworks.
+
+---
+
+## 🛠️ Technology Stack
+
+### Backend
+- **Framework:** Java 21, Spring Boot (Web, WebFlux for API Client, JPA Database Management).
+- **Document Processing:** Apache Tika `2.9.0`, Apache PDFBox `2.0.30`.
+- **AI Integration:** OpenRouter LLM API (Defaulting to `openai/gpt-4o-mini`), parsed using Jackson ObjectMappers with robust markdown-sanitized payload handlers.
+- **Database:** MySQL via `mysql-connector-j`.
+
+### Frontend
+- **Framework:** React + Vite.
+- **Styling:** Custom Vanilla CSS (Modern aesthetic using CSS Grid/Flexbox, dynamic variables, and Glassmorphism effects).
+- **Icons:** `lucide-react`.
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+Before you begin, ensure you have the following installed on your machine:
+- **Java 21 Development Kit (JDK)**
+- **Node.js** (v16+) & **npm**
+- **Maven**
+- **MySQL Server** (running on port `3306`)
+- An active **OpenRouter API Key** (Alternatively, OpenAI, Gemini).
+
+### 1. Database Configuration
+Enable your local MySQL instance and ensure you have a database created explicitly for this project:
+```sql
+CREATE DATABASE resumedb;
+```
+Ensure your `src/main/resources/application.properties` credentials map beautifully to your environment (by default: user `root`, pass ``).
+
+### 2. Configure Required Environment Variables
+To unlock the core AI-Mentorship logic, supply the application with your OpenRouter API Key. You can either hardcode the placeholder inside `application.properties` temporarily, or export it into your system environment before running the server:
+```properties
+# Inside src/main/resources/application.properties
+OPENROUTER_API_KEY=your_actual_key_here
+```
+
+### 3. Running the Backend Server
+Navigate to the root directory and start the Spring Boot application:
+```bash
+mvn clean compile
+mvn spring-boot:run
+```
+*(The backend will securely mount on `http://localhost:8080`)*
+
+### 4. Running the Frontend Dashboard
+Open a new terminal session, access the `frontend` folder, install the necessary dependencies, and spin up the Vite development server:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*(The React frontend will spin up locally, usually accessible at `http://localhost:5173`)*
+
+---
+
+## 🔌 API Endpoints Reference
+
+If you prefer interacting with the API via cURL or Postman instead of the Web UI, here are the main routes:
+
+| HTTP Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/analyze/resume-jd` | Takes a `MultipartFile` and a `JobDescription` string, returning a `SkillGapResponse` dictating missing properties. |
+| `POST` | `/api/ai/explain/simple` | Send `{"missingSkills": ["React"]}` to fetch the beginner "Story Mode" explainer. |
+| `POST` | `/api/ai/explain/deep` | Send `{"missingSkills": ["React"]}` to get architectural / expert deep-dive documentation. |
+| `POST` | `/api/ai/explain/questions` | Send `{"missingSkills": ["React"]}` to generate a random comprehensive list of 10 Multiple-Choice Questions (MCQ). |
+
+---
+
+## 🤝 Contribution and Improvements
+
+The core API engine is designed to be highly plug'n'play. Potential scopes for evolution:
+1. **Dynamic Skill Extraction:** Enhance the `nlp` package to leverage NLP Entity Recognizers (like spaCy or Stanford NLP) instead of deterministic String substring searches from `skills.txt`.
+2. **Global Exception Handlers:** Introduce Spring `@ControllerAdvice` to stream graceful REST-based HTTP Status codes to the client if Tika fails mid-parse. 
+3. **Database Persistency:** Actually save the generated resumes/gap-tables down efficiently into the `resumedb` for history tracking.
