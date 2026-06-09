@@ -31,6 +31,7 @@ public class AiExplanationService {
         String aiResponse = aiClient.generate(prompt);
         ObjectMapper objectMapper=new ObjectMapper();
         try {
+            @SuppressWarnings("unchecked")
             Map<String, Object> response =objectMapper.readValue(aiResponse, Map.class);
             return response;
         } 
@@ -39,7 +40,8 @@ public class AiExplanationService {
         }
     }
 
-   public Map<String, Object> explainDeep(List<String> skills) {
+   @SuppressWarnings("unchecked")
+public Map<String, Object> explainDeep(List<String> skills) {
 
         String prompt = promptBuilder.buildDeepExplanationPrompt(skills);
         String aiResponse = aiClient.generate(prompt);
@@ -54,6 +56,7 @@ public class AiExplanationService {
     }
 
    
+    @SuppressWarnings("unchecked")
     public Map<String,Object> getQuestions(List<String> missingSkills){
         String prompt=promptBuilder.buildQuizPrompt(missingSkills);
         String aiResponse= aiClient.generate(prompt);
